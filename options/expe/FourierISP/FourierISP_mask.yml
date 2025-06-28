@@ -1,0 +1,140 @@
+# general settings #####################################################################################################
+name: FourierISP_1210
+model_type: TripleRAWISPModel_dem
+# model_type: FiveRAWISPModel
+num_gpu: 1 # 0 for cpu mode
+manual_seed: 42
+bit: 0 # data type
+
+
+# network structure ####################################################################################################
+network_g:
+  # type: LiteISPNet_noise
+  type: FourierISP
+  wf: 24
+  in_chn: 3
+  depth: 4
+  relu_slope: 0.2
+
+# path #################################################################################################################
+path:
+  pretrain_network_g: /data3/ltl/code/BasicSR_pro/basicsr/experiments/FourierISP_1210_ISP/models/net_g_270000.pth
+  strict_load_g: true
+  resume_state: ~
+  param_key_g: params_ema
+
+# training settings ####################################################################################################
+train:
+  # basic setting
+  gt_size: ~
+  batch_size_per_gpu: 2
+  total_iter: 500000
+  ema_decay: 0.999
+
+  # optimizer setting
+  optim_g:
+    type: Adam
+    lr: !!float 2e-4
+    weight_decay: 0
+    betas: [ 0.9, 0.999 ]
+
+  ## scheduler setting
+  scheduler:
+    type: CosineAnnealingRestartLR
+    periods: [ 500000 ]
+    restart_weights: [ 1 ]
+    eta_min: !!float 1e-6
+
+  # scheduler:
+  #   type: MultiStepLR
+  #   milestones: [ 50000, 100000, 200000, 300000, 400000, 450000]
+  #   gamma: 0.5
+
+  # loss setting
+  
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+  # fft_opt:
+  #   type: FFTV10Loss
+  #   loss_weight: 0.1
+  #   reduction: mean
+
+  patch_opt:
+    type: ADLossall
+    loss_weight: 0.0001 ##0.0001
+    amp_weight: 1.0
+    phase_weight: 0.0
+    use_fft: True
+    # layer_weights: {'conv1_2': 1.0, 'conv2_2': 1.0, 'conv3_2': 1.0, 'conv4_2': 1.0, 'conv5_2': 1.0}
+    layer_weights: {'conv2_2': 1.0, 'conv4_2': 1.0}
+    # # layer_weights: {'conv4_4': 1.0}
+
+    # type: FDLoss
+    # phase_weight: 0 
+
+    # type: PerceptualCXLoss
+    # loss_weight: 1.0
+    # reduction: mean
+    # sigma: 0.2
+
+    # type: CDFL1HistogramLoss
+    # loss_weight: 1.0
+
+    # type: ContextualLoss
+    # band_width: !!float 0.5
+    # vgg_layer: conv4_4
+    # loss_type: cosine
+    # loss_weight: !!float 0.001
+    # reduction: mean
+
+    # type: CoBiLoss
+    # band_width: !!float 0.5
+    # vgg_layer: conv4_4
+    # loss_type: cosine
+    # loss_weight: !!float 0.001
+    # reduction: mean
+
+  # ssim_opt:
+  #   type: SSIMLoss
+  #   loss_weight: 0.1
+  #   reduction: mean
+
+  # psnr_opt:
+  #   type: PSNRLoss
+  #   loss_weight: 1.0
+  #   reduction: mean
+
+  # perceptual_opt:
+  #   type: PerceptualLoss
+  #   layer_weights: {'relu1_2': 1.,'relu2_2': 1.,'relu3_2': 1.,'relu4_2': 1.}
+  #   vgg_type: 'vgg19'
+  #   use_input_norm: True
+  #   range_norm: False
+  #   perceptual_weight: 1.0
+  #   style_weight: 0.
+  #   criterion: 'l1'
+
+
+# validation settings ##################################################################################################
+val:
+  val_freq: 10000
+  save_img: true
+  suffix: ~
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    # ssim:
+    #   type: calculate_ssim
+    #   crop_border: 0
+    #   test_y_channel: false
+    # niqe:
+    #   type: calculate_niqe
+    #   crop_border: 0
+
+    

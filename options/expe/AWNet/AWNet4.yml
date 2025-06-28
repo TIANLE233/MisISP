@@ -1,0 +1,88 @@
+# general settings #####################################################################################################
+name: AWNet4_143
+model_type: ISPModel
+num_gpu: 1  # 0 for cpu mode
+manual_seed: 42
+bit: 0 # data type
+
+
+# network structure ####################################################################################################
+network_g:
+  type: AWNet4
+
+
+# path #################################################################################################################
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+
+# training settings ####################################################################################################
+train:
+  # basic setting
+  gt_size: 128
+  batch_size_per_gpu: 32
+  total_iter: 500000
+
+  # optimizer setting
+  optim_g:
+    type: Adam
+    lr: !!float 1e-3
+    weight_decay: 0
+    betas: [ 0.9, 0.999 ]
+
+  # scheduler setting
+  # scheduler:
+  #   type: CosineAnnealingRestartLR
+  #   periods: [ 1000000 ]
+  #   restart_weights: [ 1 ]
+  #   eta_min: !!float 5e-7
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [ 50000, 100000, 200000, 300000, 400000, 450000]
+    gamma: 0.5
+
+  # loss setting
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+  ssim_opt:
+    type: SSIMLoss
+    loss_weight: 0.1
+    reduction: mean
+
+  # psnr_opt:
+  #   type: PSNRLoss
+  #   loss_weight: 1.0
+  #   reduction: mean
+
+  # perceptual_opt:
+  #   type: PerceptualLoss
+  #   layer_weights: {'relu5_4': 1.}
+  #   vgg_type: 'vgg19'
+  #   use_input_norm: True
+  #   range_norm: False
+  #   perceptual_weight: 1.0
+  #   style_weight: 0.
+  #   criterion: 'l1'
+
+
+# validation settings ##################################################################################################
+val:
+  val_freq: 10000
+  save_img: false
+  suffix: ~
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false

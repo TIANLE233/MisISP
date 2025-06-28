@@ -1,0 +1,1297 @@
+# GENERATE TIME: Mon Dec  9 10:38:45 2024
+# CMD:
+# basicsr/train.py -path_arch /data0/ltl/code/BasicSR_pro/basicsr/archs/LiteISPNet_arch.py -path_model /data0/ltl/code/BasicSR_pro/basicsr/models/quadrawisp_model.py -path_data /data0/ltl/code/BasicSR_pro/basicsr/data/quadrawisp_dataset.py -expe_opt options/task/RAWISP4_mask.yml -task_opt options/expe/LiteISPNet/LiteISPNet_mask.yml --launcher pytorch
+
+# --------------------------------------------------------------------------------
+# Basic experiment YML file of ISP.
+#
+# Implemented/Modified by Fried Rice Lab (https://github.com/Fried-Rice-Lab)
+# --------------------------------------------------------------------------------
+
+
+# general settings #####################################################################################################
+task_name: ISP
+scale: 2
+num_in_ch: 4
+num_out_ch: 3
+task: isp
+hook_layer_type: Conv2d
+
+
+# dataset and data loader settings #####################################################################################
+datasets:
+
+  # train:
+  #   name: S7_train
+  #   type: ISPDataset4
+  #   dataroot_gt: /data3/ltl/dataset/S7/train/gt_crop/
+  #   dataroot_lq: /data3/ltl/dataset/S7/train/raw_crop/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+  # train:
+  #   name: Revealer0522_train
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/Revealer0522/gt_sift_crop480/DL/
+  #   dataroot_lq: /data0/ltl/dataset/Revealer0522/raw_crop480/
+  #   dataroot_masko: /data0/ltl/dataset/Revealer0522/gt_sift_crop480/mask/
+  #   dataroot_maskp: /data0/ltl/dataset/Revealer0522/gt_sift_crop480/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+  # train:
+  #   name: Revealer0518_train
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/Revealer0518/gt_sift_crop480/DL/
+  #   dataroot_lq: /data0/ltl/dataset/Revealer0518/raw_crop480/
+  #   dataroot_masko: /data0/ltl/dataset/Revealer0518/gt_sift_crop480/mask/
+  #   dataroot_maskp: /data0/ltl/dataset/Revealer0518/gt_sift_crop480/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  #   extra_datasets:
+  #     extra_2:
+  #       name: Revealer0520_train
+  #       type: TripleRAWISP4
+  #       dataroot_gt: /data0/ltl/dataset/Revealer0520/gt_sift_crop480/DL/
+  #       dataroot_lq: /data0/ltl/dataset/Revealer0520/raw_crop480/
+  #       dataroot_masko: /data0/ltl/dataset/Revealer0520/gt_sift_crop480/mask/
+  #       dataroot_maskp: /data0/ltl/dataset/Revealer0520/gt_sift_crop480/mask/
+  #       filename_tmpl: '{}'
+  #       io_backend:
+  #         type: disk  
+  # train:
+  #   name: Revealer0512_train1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_crop256/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw_crop256/set2/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  #   extra_datasets:
+  #     extra_2:
+  #       name: Revealer0512_train2
+  #       type: TripleRAWISP4
+  #       dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_crop256/DL/
+  #       dataroot_lq: /data3/ltl/dataset/Revealer0512/raw_crop256/set3/
+  #       dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       filename_tmpl: '{}'
+  #       io_backend:
+  #         type: disk  
+
+  #     extra_3:
+  #       name: Revealer0512_train3
+  #       type: TripleRAWISP4
+  #       dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_crop256/DL/
+  #       dataroot_lq: /data3/ltl/dataset/Revealer0512/raw_crop256/set4/
+  #       dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       filename_tmpl: '{}'
+  #       io_backend:
+  #         type: disk  
+
+  #     extra_4:
+  #       name: Revealer0512_train4
+  #       type: TripleRAWISP4
+  #       dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_crop256/DL/
+  #       dataroot_lq: /data3/ltl/dataset/Revealer0512/raw_crop256/set6/
+  #       dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_crop256/mask/
+  #       filename_tmpl: '{}'
+  #       io_backend:
+  #         type: disk  
+  # train:
+  #   name: ZRR_train
+  #   type: TripleRAWISP4_ZRR
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/train/canon_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/train/huawei_raw/
+  #   dataroot_masko: /data3/ltl/dataset/ZRR4mai/train/canon_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/ZRR4mai/train/PMML/raft/vpc64-0.10/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+  # train:
+  #   name: MAI_train
+  #   type: TripleRAWISP4_ZRR
+  #   dataroot_gt: /data3/ltl/dataset/MAI/train/DL_kpas/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/MAI2021/train/mediatek_raw/
+  #   dataroot_masko: /data3/ltl/dataset/MAI/train/DL_kpas/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/MAI/PMML/vpc64-0.20/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  train:
+    name: MAI_traino
+    type: TripleRAWISP4_ZRR
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/train/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/train/mediatek_raw/
+    dataroot_masko: /data3/ltl/dataset/MAI/train/DL_kpas/mask/
+    dataroot_maskp: /data3/ltl/dataset/MAI/train/DL_kpas/mask/
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk  
+  # train:
+  #   name: ZRR_traino
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/train/canon/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/train/huawei_raw/
+  #   dataroot_masko: /data3/ltl/dataset/ZRR4mai/train/canon_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/ZRR4mai/train/canon_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+# datasets:
+#   train:
+#     name: HS2DL_set2
+#     type: QuadRAWISP4
+#     dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#     dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set2/
+#     dataroot_ref: /data0/ltl/dataset/myall/train/DL_1536_512/
+#     dataroot_mask: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.20-m/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_3:
+#         name: HS2DL_set3
+#         type: QuadRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set3/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_1536_512/
+#         dataroot_mask: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.20-m/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_set4
+#         type: QuadRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set4/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_1536_512/
+#         dataroot_mask: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.20-m/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_set5
+#         type: QuadRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set5/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_1536_512/
+#         dataroot_mask: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.20-m/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_6:
+#         name: HS2DL_set6
+#         type: QuadRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set6/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_1536_512/
+#         dataroot_mask: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.20-m/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+# # # raft?
+# datasets:
+#   train:
+#     name: HS2DL_rafts_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#     dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_rafts_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_rafts_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_rafts_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_rafts_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_rafts_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_rafthm_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/rafthm_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+# # o
+# datasets:
+#   train:
+#     name: HS2DL_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#     dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_512/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+# rafts for set2
+# datasets:
+#   train:
+#     name: HS2DL_rafts_set2
+#     type: TripleRAWISP4
+#     dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafts_512/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#     dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+#     dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+# # rafts
+# datasets:
+#   train:
+#     name: HS2DL_rafts_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#     dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_rafts_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_rafts_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_rafts_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_rafts_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_rafts_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /lab310/LTL_RHID/maindata/train/PMML/rafts_512/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+# # rafto
+# datasets:
+#   train:
+#     name: HS2DL_rafto_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#     dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_rafto_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_rafto_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/ 
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_rafto_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/ 
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_rafto_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/ 
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_rafto_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/RHID/train/DL_f1do_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/RHID/train/DL_f1do_512/mask/ 
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+# # raftall
+# datasets:
+#   train:
+#     name: HS2DL_raftall_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set1/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set1/mask/
+#     dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set1/vpc64-0.20/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_raftall_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set2/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set2/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set2/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_raftall_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set3/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set3/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set3/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_raftall_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set4/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set4/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set4/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_raftall_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set5/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set5/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set5/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_raftall_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set6/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /data3/ltl/dataset/LTL_RHID/maindata/train/DL_raftall_512/set6/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/PMML/raftall_512/set6/vpc64-0.20/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+# # raftofc
+# datasets:
+#   train:
+#     name: HS2DL_rafto_set1
+#     type: TripleRAWISP4
+#     dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#     dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+#     dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#     dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_rafto_set2
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set2/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_3:
+#         name: HS2DL_rafto_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set3/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_rafto_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set4/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_rafto_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set5/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_6:
+#         name: HS2DL_rafto_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafto_512/DL/
+#         dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set6/
+#         dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafto_512/mask/
+#         dataroot_maskp: /data3/ltl/dataset/LTL_RHID/maindata/train/OFCmask/3.0_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+# datasets:
+#   train:
+#     name: HS2DL_rafts_set2
+#     type: TripleRAWISP4
+#     dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#     dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set2/
+#     dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/mask/
+#     dataroot_maskp: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.30/mask/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_3:
+#         name: HS2DL_rafts_set3
+#         type: TripleRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set3/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/mask/
+#         dataroot_maskp: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.30/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_4:
+#         name: HS2DL_rafts_set4
+#         type: TripleRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set4/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/mask/
+#         dataroot_maskp: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.30/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_5:
+#         name: HS2DL_rafts_set5
+#         type: TripleRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set5/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/mask/
+#         dataroot_maskp: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.30/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk  
+
+#       extra_6:
+#         name: HS2DL_rafts_set6
+#         type: TripleRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_1536_512/set6/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_1536_512/mask/
+#         dataroot_maskp: /data0/ltl/dataset/myall/train/PMML/rafts_512/vpc128-0.30/mask/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+# ref
+# datasets:
+#   train:
+#     name: HS2DL_rafts_set1
+#     type: FiveRAWISP4
+#     dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#     dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set1/
+#     dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#     dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#     dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#     filename_tmpl: '{}'
+#     io_backend:
+#       type: disk    
+
+#     extra_datasets:
+#       extra_2:
+#         name: HS2DL_rafts_set2
+#         type: FiveRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set2/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#         dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+#       extra_3:
+#         name: HS2DL_rafts_set3
+#         type: FiveRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set3/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#         dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk 
+
+#       extra_4:
+#         name: HS2DL_rafts_set4
+#         type: FiveRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set4/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#         dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+#       extra_5:
+#         name: HS2DL_rafts_set5
+#         type: FiveRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set5/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#         dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+#       extra_6:
+#         name: HS2DL_rafts_set6
+#         type: FiveRAWISP4
+#         dataroot_gt: /data0/ltl/dataset/myall/train/DL_rafts_512/DL/
+#         dataroot_lq: /data0/ltl/dataset/myall/train/raw_512/set6/
+#         dataroot_masko: /data0/ltl/dataset/myall/train/DL_rafts_512/mask/
+#         dataroot_maskp: /data1/ltl/dataset/myall/train/PMML/rafts_512/vpc64-0.20/mask/
+#         dataroot_ref: /data0/ltl/dataset/myall/train/DL_512/
+#         filename_tmpl: '{}'
+#         io_backend:
+#           type: disk
+
+    use_hflip: false
+    use_rot: false
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    dataset_enlarge_ratio: 4
+    prefetch_mode: ~
+
+
+# val datasets #########################################################################################################
+  # val_1:
+  #   name: S7_val
+  #   type: ISPDataset4
+  #   dataroot_gt: /data3/ltl/dataset/S7/val/gt_crop/
+  #   dataroot_lq: /data3/ltl/dataset/S7/val/raw_crop/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+  # val_0:
+  #   name: test519_shanandqiu
+  #   type: ISPDataset4_noise
+  #   dataroot_gt: /data0/ltl/dataset/Revealer0519/gt/
+  #   dataroot_lq: /data0/ltl/dataset/Revealer0519/raw/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  # val_1:
+  #   name: Revealer0518_val
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/Revealer0518/gt_resize/
+  #   dataroot_lq: /data0/ltl/dataset/Revealer0518/raw_crop/
+  #   dataroot_masko: /data0/ltl/dataset/Revealer0518/gt_resize/
+  #   dataroot_maskp: /data0/ltl/dataset/Revealer0518/gt_resize/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+
+  # val_2:
+  #   name: Revealer0512_val1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw/set2/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+
+
+  # val_1:
+  #   name: ZRR_val
+  #   type: TripleRAWISP4_ZRR
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/highsimi/DL/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/highsimi/huawei_raw/
+  #   dataroot_masko: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  val_1:
+    name: MAI_val
+    type: TripleRAWISP4_ZRR
+    dataroot_gt: /data3/ltl/dataset/MAI/val/highsimi/DL/
+    dataroot_lq: /data3/ltl/dataset/MAI/val/highsimi/raw/
+    dataroot_masko: /data3/ltl/dataset/MAI/val/highsimi/mask/
+    dataroot_maskp: /data3/ltl/dataset/MAI/val/highsimi/mask/
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk 
+
+  # val_2:
+  #   name: HS2DL-p_raft-style_set2
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set2/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+  # val_3:
+  #   name: HS2DL-p_raft-style_set3
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set3/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # val_5:
+  #   name: HS2DL-p_raft-style_set3
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set5/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+  # val_0: # demo dataset
+  #   name: MAI2021
+  #   type: ISPDataset4_noise
+  #   dataroot_gt: /data3/ltl/dataset/MAI2021/val/fujifilm/
+  #   dataroot_lq: /data3/ltl/dataset/MAI2021/val/mediatek_raw/
+  #   io_backend:
+  #     type: disk
+
+  # val_3:
+  #   name: HS2DL_raft-style_set3
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/val/DL_rafts_1536_512/DL/
+  #   dataroot_lq: /data0/ltl/dataset/myall/val/raw_1536_512/set3/
+  #   io_backend:
+  #     type: disk 
+
+  # val_4:
+  #   name: HS2DL_raft-style_set4_pure_512
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/val/val241218/DL_512/
+  #   dataroot_lq: /data0/ltl/dataset/myall/val/val241218/set4_512/
+  #   io_backend:
+  #     type: disk 
+
+  # val_5:
+  #   name: HS2DL_raft-style_set5
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/val/DL_rafts_1536_512/DL/
+  #   dataroot_lq: /data0/ltl/dataset/myall/val/raw_1536_512/set5/
+  #   io_backend:
+  #     type: disk 
+
+  # val_6:
+  #   name: HS2DL_raft-style_set6
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/val/sift_crop1536_raft/crop512/DL/
+  #   dataroot_lq: /data0/ltl/dataset/myall/val/raw12_crop1536/crop256/set6/
+  #   dataroot_mask: /data0/ltl/dataset/myall/val/sift_crop1536_raft/crop512/mask/
+  #   io_backend:
+  #     type: disk 
+
+
+  # val_1:
+  #   name: ZRR_tiny
+  #   type: ISPDataset
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon_tiny
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw_tiny
+  #   io_backend:
+  #     type: disk
+
+
+# test datasets ########################################################################################################
+test_datasets:
+
+  test_4: # demo dataset
+    name: HS2DL_raft-style_4_full_all
+    type: TripleRAWISP4
+    dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+    dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set4/
+    dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+    dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+    io_backend:
+      type: disk 
+  # test_1: # demo dataset
+  #   name: Revealer0512_val1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw/set2/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  # test_2: # demo dataset
+  #   name: Revealer0512_val2
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw/set3/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  # test_3: # demo dataset
+  #   name: Revealer0512_val3
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw/set4/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  # test_4: # demo dataset
+  #   name: Revealer0512_val4
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/Revealer0512/gt_rafts/DL/
+  #   dataroot_lq: /data3/ltl/dataset/Revealer0512/raw/set6/
+  #   dataroot_masko: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/Revealer0512/gt_rafts/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+  # test_1: # demo dataset
+  #   name: HS2DL_raft-style_1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set1/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_2: # demo dataset
+  #   name: HS2DL_raft-style_2
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set2/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_3: # demo dataset
+  #   name: HS2DL_raft-style_3
+  #   type: TripleRAWISP4_ZRR
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set3/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_4: # demo dataset
+  #   name: HS2DL_raft-style_4
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set4/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_5: # demo dataset
+  #   name: HS2DL_raft-style_5
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set5/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_6: # demo dataset
+  #   name: HS2DL_raft-style_6
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set6/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # test_7:
+  #   name: ZRR_val_0.5
+  #   type: TripleRAWISP4_ZRR
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/highsimi/DL/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/highsimi/huawei_raw/
+  #   dataroot_masko: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+
+# analyse datasets #####################################################################################################
+analyse_datasets:
+  analyse_0: # demo dataset
+    name: HS2DL-p_raft-style_set3
+    type: TripleRAWISP4
+    dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+    dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set3/
+    dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+    dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+    io_backend:
+      type: disk 
+
+
+# infer datasets #######################################################################################################
+infer_datasets:
+  infer_0: # demo dataset
+    name: demo
+    type: TripleRAWISP4
+    dataroot_gt: /data3/ltl/code/RHID_code/demo/Canon
+    dataroot_lq: /data3/ltl/code/RHID_code/demo/Revealer/set4
+    dataroot_masko: /data3/ltl/code/RHID_code/demo/Canon
+    dataroot_maskp: /data3/ltl/code/RHID_code/demo/Canon
+    io_backend:
+      type: disk 
+  # infer_4: # demo dataset
+  #   name: HS2DL_raft-style_4_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set4/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_1: # demo dataset
+  #   name: HS2DL_raft-style_1_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set1/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_2: # demo dataset
+  #   name: HS2DL_raft-style_2_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set2/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_3: # demo dataset
+  #   name: HS2DL_raft-style_3_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set3/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_5: # demo dataset
+  #   name: HS2DL_raft-style_5_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set5/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_6: # demo dataset
+  #   name: HS2DL_raft-style_6_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set6/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk 
+  # infer_4: # demo dataset
+  #   name: HS2DL_raft-style_4_full_all
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/raw12/set4/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/DL_png/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/DL_png/
+  #   io_backend:
+  #     type: disk                         
+  # infer_0: # demo dataset
+  #   name: ZRR_val
+  #   type: TripleRAWISP4_dem
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/highsimi/DL/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/highsimi/huawei_raw/
+  #   dataroot_masko: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   dataroot_maskp: /data3/ltl/dataset/ZRR4mai/val/highsimi/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk 
+  # infer_1: # demo dataset
+  #   name: HS2DL_raft-style_1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set1/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_2: # demo dataset
+  #   name: HS2DL_raft-style_2
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set2/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_3: # demo dataset
+  #   name: HS2DL_raft-style_3
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set3/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_4: # demo dataset
+  #   name: HS2DL_raft-style_4
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set4/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_5: # demo dataset
+  #   name: HS2DL_raft-style_5
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set5/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_6: # demo dataset
+  #   name: HS2DL_raft-style_6
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set6/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   dataroot_maskp: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_7: # demo dataset
+  #   name: HS2DL_raft-stylefull_1
+  #   type: TripleRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/tu/gt/
+  #   dataroot_lq: /data0/ltl/dataset/myall/tu//
+  #   dataroot_masko: /data0/ltl/dataset/myall/tu/mo/
+  #   dataroot_maskp: /data0/ltl/dataset/myall/tu/mp/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_2: # demo dataset
+  #   name: raw12-set2
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/DL_mirr/
+  #   dataroot_lq: /data0/ltl/dataset/myall/raw12/set2/
+  #   io_backend:
+  #     type: disk 
+
+  # # infer_3: # demo dataset
+  # #   name: HS2DL_raft-style_setall
+  # #   type: DUALRAWISP4
+  # #   dataroot_gt: /data0/ltl/dataset/myall/val/sift_crop1536_raft/crop512_womask_all/DL
+  # #   dataroot_lq: /data0/ltl/dataset/myall/val/raw12_crop1536/crop512_womask_all/
+  # #   io_backend:
+  # #     type: disk 
+
+  # infer_4: # demo dataset
+  #   name: raw12-set4
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/DL_mirr/
+  #   dataroot_lq: /data0/ltl/dataset/myall/raw12/set4/
+  #   io_backend:
+  #     type: disk 
+
+  # # infer_5: # demo dataset
+  # #   name: HS2DL_raft-style_setall
+  # #   type: DUALRAWISP4
+  # #   dataroot_gt: /data0/ltl/dataset/myall/val/sift_crop1536_raft/crop512_womask_all/DL
+  # #   dataroot_lq: /data0/ltl/dataset/myall/val/raw12_crop1536/crop512_womask_all/
+  # #   io_backend:
+  # #     type: disk 
+
+  # infer_6: # demo dataset
+  #   name: raw12-set6
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data0/ltl/dataset/myall/DL_mirr/
+  #   dataroot_lq: /data0/ltl/dataset/myall/raw12/set6/
+  #   io_backend:
+  #     type: disk                         
+
+# cka datasets #########################################################################################################
+cka_datasets:
+  cka_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# mad datasets #########################################################################################################
+mad_datasets:
+  mad_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# interpret imgs #######################################################################################################
+interpret_imgs:
+  img_0:
+    img_path: datasets/demo_data/Urban7/7.png
+    w: 110
+    h: 150
+
+
+# logging settings #####################################################################################################
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: 5000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+
+# dist training settings ###############################################################################################
+dist_params:
+  backend: nccl
+  port: 4000

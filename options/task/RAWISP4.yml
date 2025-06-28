@@ -1,0 +1,315 @@
+# --------------------------------------------------------------------------------
+# Basic experiment YML file of ISP.
+#
+# Implemented/Modified by Fried Rice Lab (https://github.com/Fried-Rice-Lab)
+# --------------------------------------------------------------------------------
+
+
+# general settings #####################################################################################################
+task_name: ISP
+scale: 2
+num_in_ch: 4
+num_out_ch: 3
+task: isp
+hook_layer_type: Conv2d
+
+
+# dataset and data loader settings #####################################################################################
+datasets:
+  # train:
+  #   name: HSDL0000-0479
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/DLRGB_ali_SIFT_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/HSRAW12_SIFT_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  train:
+    name: HSDL0000-0479_Origin
+    type: DUALRAWISP4
+    dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/Origin/DLRGB_sub/
+    dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/Origin/HSRAW12_sub/
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+  # train:
+  #   name: HSDL0000-0479_SIFT
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  # train:
+  #   name: HSDL0000-0479_RAFT
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  # train:
+  #   name: HSDL0000-0479_SIFT_RAFT
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT_RAFT/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT_RAFT/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_hist
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_hist/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_hist/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style_r2-2_0.5
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/DLRGB_sub_r2-2_0.5/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/HSRAW12_mask_sub_r2-2_0.5/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style_c2-2_0.6
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/DLRGB_sub_c2-2_0.6/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/HSRAW12_mask_sub_c2-2_0.6/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style_c2-2_0.7
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/DLRGB_sub_c2-2_0.7/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style/HSRAW12_mask_sub_c2-2_0.7/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_c2_2_0.5_b32_style
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT/RAFT_c2_2_0.5_b32_style/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT/RAFT_c2_2_0.5_b32_style/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style250
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style250/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style250/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk   
+
+  # train:
+  #   name: HSDL0000-0479_RAFT_style250_c2_2_0.5_b32_style
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style250/RAFT_style250_c2_2_0.5_b32_style/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/RAFT_style250/RAFT_style250_c2_2_0.5_b32_style/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk    
+
+    # extra_datasets:
+    #   extra_1:
+    #     name: MAI21
+    #     dataroot_gt: /data3/ltl/dataset/MAI2021_LearnedISP_train/train/fujifilm/
+    #     dataroot_lq: /data3/ltl/dataset/MAI2021_LearnedISP_train/train/mediatek_raw/
+    #     filename_tmpl: '{}'
+    #     io_backend:
+    #       type: disk
+
+    use_hflip: false
+    use_rot: false
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 8
+    dataset_enlarge_ratio: 10
+    prefetch_mode: ~
+
+
+# val datasets #########################################################################################################
+  val_0:
+    name: HSDL0000-0479
+    type: DUALRAWISP4
+    dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/val/DLRGB/
+    dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/val/HSRAW12/
+    io_backend:
+      type: disk
+
+  # val_1:
+  #   name: ZRR_tiny
+  #   type: ISPDataset
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon_tiny
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw_tiny
+  #   io_backend:
+  #     type: disk
+
+
+# test datasets ########################################################################################################
+test_datasets:
+  test_0:
+    name: HSDL0-101train
+    type: DUALRAWISP4
+    dataroot_gt: /data3/ltl/dataset/dataset_all/240712_0-101/train/DLRGB_ali_SIFT/
+    dataroot_lq: /data3/ltl/dataset/dataset_all/240712_0-101/train/HSRAW12mask/
+    io_backend:
+      type: disk
+
+
+  test_1:
+    name: HSDL0-101val
+    type: DUALRAWISP4
+    dataroot_gt: /data3/ltl/dataset/dataset_all/240712_0-101/val/DLRGB_ali_SIFT/
+    dataroot_lq: /data3/ltl/dataset/dataset_all/240712_0-101/val/HSRAW12mask/
+    io_backend:
+      type: disk
+
+  # test_2:
+  #   name: ZZR5-full
+  #   type: ISPDataset
+  #   dataroot_gt: /data3/ltl/code/BasicISP/datasets/demo_data/ZZR5-full/GT
+  #   dataroot_lq: /data3/ltl/code/BasicISP/datasets/demo_data/ZZR5-full/RAW
+  #   io_backend:
+  #     type: disk
+
+# analyse datasets #####################################################################################################
+analyse_datasets:
+  analyse_0: # demo dataset
+    name: ZZR
+    type: ISPDataset
+    dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon
+    dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw
+    io_backend:
+      type: disk
+
+
+# infer datasets #######################################################################################################
+infer_datasets:
+  # infer_1: # demo dataset
+  #   name: HS2DL_raft-style_1
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set1/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_2: # demo dataset
+  #   name: HS2DL_raft-style_2
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set2/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_3: # demo dataset
+  #   name: HS2DL_raft-style_3
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set3/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_4: # demo dataset
+  #   name: HS2DL_raft-style_4
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set4/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_5: # demo dataset
+  #   name: HS2DL_raft-style_5
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set5/
+  #   io_backend:
+  #     type: disk 
+
+  # infer_6: # demo dataset
+  #   name: HS2DL_raft-style_6
+  #   type: DUALRAWISP4
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/pure/raw_512/set6/
+  #   io_backend:
+  #     type: disk 
+
+  infer_7: # demo dataset
+    name: guoying
+    type: DUALRAWISP4
+    dataroot_gt: /data3/ltl/dataset/image/rgb/
+    dataroot_lq: /data3/ltl/dataset/image/raw12/
+    io_backend:
+      type: disk 
+      
+# cka datasets #########################################################################################################
+cka_datasets:
+  cka_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# mad datasets #########################################################################################################
+mad_datasets:
+  mad_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# interpret imgs #######################################################################################################
+interpret_imgs:
+  img_0:
+    img_path: datasets/demo_data/Urban7/7.png
+    w: 110
+    h: 150
+
+
+# logging settings #####################################################################################################
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: 100000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+
+# dist training settings ###############################################################################################
+dist_params:
+  backend: nccl
+  port: 4000

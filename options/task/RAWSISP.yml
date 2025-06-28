@@ -1,0 +1,283 @@
+# --------------------------------------------------------------------------------
+# Basic experiment YML file of ISP.
+#
+# Implemented/Modified by Fried Rice Lab (https://github.com/Fried-Rice-Lab)
+# --------------------------------------------------------------------------------
+
+
+# general settings #####################################################################################################
+task_name: ISP
+scale: 1
+num_in_ch: 3
+num_out_ch: 3
+task: isp
+hook_layer_type: Conv2d
+
+
+# dataset and data loader settings #####################################################################################
+datasets:
+  # train:
+  #   name: HSDL0000-0479
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/DLRGB_ali_SIFT_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/HSRAW12_SIFT_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  # train:
+  #   name: HSDL0000-0479_SIFT
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT/DLRGB_sub/
+  #   dataroot_lq: /data3/ltl/dataset/dataset_all/240719_0000-0479/train/SIFT/HSRAW12_mask_sub/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  # train:
+  #   name: HS2DL0000-1938_crop256_set1
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data0/ltl/dataset/myall/DL_mirr_crop512/
+  #   dataroot_lq: /data0/ltl/dataset/myall/raw12_crop512/set1/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk  
+
+  # train:
+  #   name: ZRR_train
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/train/canon/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/train/huawei_raw/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+  #   extra_datasets:
+  #     extra_1:
+  #       name: ZRR_val
+  #       type: DUALRAWSISP
+  #       dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon/
+  #       dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw/
+  #       io_backend:
+  #         type: disk
+
+  train:
+    name: MAI_train
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/train/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/train/mediatek_raw/
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+    extra_datasets:
+      extra_1:
+        name: MAI_val
+        type: DUALRAWSISP
+        dataroot_gt: /lab310/LTL_RHID/MAI2021/val/fujifilm/
+        dataroot_lq: /lab310/LTL_RHID/MAI2021/val/mediatek_raw/
+        io_backend:
+          type: disk
+
+  # train:
+  #   name: HS2DL5239_train
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/train/raw_512/set1/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/train/DL_rafts_512/mask/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+    # extra_datasets:
+    #   extra_1:
+    #     name: HS2DL5239_val
+    #     type: DUALRAWSISP
+    #     dataroot_gt: /lab310/LTL_RHID/maindata/val/DL_512/
+    #     dataroot_lq: /lab310/LTL_RHID/maindata/val/raw12_512/set1/
+    #     io_backend:
+    #       type: disk
+
+    use_hflip: false
+    use_rot: false
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    dataset_enlarge_ratio: 10
+    prefetch_mode: ~
+
+
+# val datasets #########################################################################################################
+  # val_0:
+  #   name: HS2DL0000-1938_crop256_set1
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data0/ltl/dataset/myall/DL_mirr/
+  #   dataroot_lq: /data0/ltl/dataset/myall/raw12/set1/
+  #   io_backend:
+  #     type: disk 
+
+  # val_1:
+  #   name: HS2DL5239_val
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/DL/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/raw_512/set1/
+  #   dataroot_masko: /lab310/LTL_RHID/maindata/val/pure/DL_rafts_512/mask/
+  #   io_backend:
+  #     type: disk
+
+  # val_2:
+  #   name: ZRR_val
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw/
+  #   io_backend:
+  #     type: disk
+  val_3:
+    name: MAI_val
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/val/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/val/mediatek_raw/
+    io_backend:
+      type: disk
+# test datasets ########################################################################################################
+test_datasets:
+  # test_0:
+  #   name: HS2DL5239_train
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/train/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/train/raw12/set1/
+  #   io_backend:
+  #     type: disk  
+
+  # test_1:
+  #   name: HS2DL5239_val
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/raw12/set1/
+  #   io_backend:
+  #     type: disk 
+  test_0:
+    name: MAI_val
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/val/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/val/mediatek_raw/
+    io_backend:
+      type: disk
+
+  test_1:
+    name: MAI_train
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/train/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/train/mediatek_raw/
+    io_backend:
+      type: disk
+  # test_2:
+  #   name: ZZR5-full
+  #   type: ISPDataset
+  #   dataroot_gt: /data3/ltl/code/BasicISP/datasets/demo_data/ZZR5-full/GT
+  #   dataroot_lq: /data3/ltl/code/BasicISP/datasets/demo_data/ZZR5-full/RAW
+  #   io_backend:
+  #     type: disk
+
+# analyse datasets #####################################################################################################
+analyse_datasets:
+  analyse_0: # demo dataset
+    name: ZZR
+    type: ISPDataset
+    dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon
+    dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw
+    io_backend:
+      type: disk
+
+
+# infer datasets #######################################################################################################
+infer_datasets:
+  infer_0:
+    name: MAI_val
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/val/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/val/mediatek_raw/
+    io_backend:
+      type: disk
+
+  infer_1:
+    name: MAI_train
+    type: DUALRAWSISP
+    dataroot_gt: /lab310/LTL_RHID/MAI2021/train/fujifilm/
+    dataroot_lq: /lab310/LTL_RHID/MAI2021/train/mediatek_raw/
+    io_backend:
+      type: disk
+  # infer_0: # demo dataset
+  #   name: HS2DL5239_val
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /lab310/LTL_RHID/maindata/val/DL_png/
+  #   dataroot_lq: /lab310/LTL_RHID/maindata/val/raw12/set1/
+  #   io_backend:
+  #     type: disk
+  # infer_1:
+  #   name: ZRR_train
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/train/canon/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/train/huawei_raw/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+      
+  # infer_2:
+  #   name: ZRR_val
+  #   type: DUALRAWSISP
+  #   dataroot_gt: /data3/ltl/dataset/ZRR4mai/val/canon/
+  #   dataroot_lq: /data3/ltl/dataset/ZRR4mai/val/huawei_raw/
+  #   filename_tmpl: '{}'
+  #   io_backend:
+  #     type: disk
+
+
+
+# cka datasets #########################################################################################################
+cka_datasets:
+  cka_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# mad datasets #########################################################################################################
+mad_datasets:
+  mad_0:
+    name: SIDD_val_10
+    type: IRDataset
+    dataroot_gt: datasets/denoising_data/SIDD/val_10/gt_crops.lmdb
+    dataroot_lq: datasets/denoising_data/SIDD/val_10/input_crops.lmdb
+    io_backend:
+      type: lmdb
+    input_size: 288
+
+
+# interpret imgs #######################################################################################################
+interpret_imgs:
+  img_0:
+    img_path: datasets/demo_data/Urban7/7.png
+    w: 110
+    h: 150
+
+
+# logging settings #####################################################################################################
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: 50000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+
+# dist training settings ###############################################################################################
+dist_params:
+  backend: nccl
+  port: 4000
