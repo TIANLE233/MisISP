@@ -1060,10 +1060,10 @@ infer_datasets:
   infer_0: # demo dataset
     name: demo
     type: TripleRAWISP4
-    dataroot_gt: /data3/ltl/code/RHID_code/demo/Canon
-    dataroot_lq: /data3/ltl/code/RHID_code/demo/Revealer/set4
-    dataroot_masko: /data3/ltl/code/RHID_code/demo/Canon
-    dataroot_maskp: /data3/ltl/code/RHID_code/demo/Canon
+    dataroot_gt: demo/Canon
+    dataroot_lq: demo/Revealer/set4
+    dataroot_masko: demo/Canon
+    dataroot_maskp: demo/Canon
     io_backend:
       type: disk 
   # infer_4: # demo dataset
