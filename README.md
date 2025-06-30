@@ -28,7 +28,7 @@ python setup.py develop
 ## Demos
 You can demo a trained model on prepared images:
 ```Shell
-bash basicsr/run.sh 0 4050 basicsr/infer.py /data3/ltl/code/BasicSR_pro/basicsr/archs/LiteISPNet_arch.py /data3/ltl/code/BasicSR_pro/basicsr/models/triplerawisp_model.py /data3/ltl/code/BasicSR_pro/basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml infer.out
+bash basicsr/run.sh 0 4050 basicsr/infer.py basicsr/archs/LiteISPNet_arch.py basicsr/models/triplerawisp_model.py basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml infer.out
 ```
 The results will be saved in `basicsr/results`.
 
@@ -67,13 +67,13 @@ RHID_dataset/
 ## test
 Add the path of the test dataset to `RAWISP4_mask.yml`, then modify the settings in `run.sh` and `LiteISPNet_mask.yml`, and finally run:
 ```Shell
-bash basicsr/run.sh 0 4060 basicsr/test.py /data3/ltl/code/BasicSR_pro/basicsr/archs/LiteISPNet_arch.py /data3/ltl/code/BasicSR_pro/basicsr/models/triplerawisp_model.py /data3/ltl/code/BasicSR_pro/basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml test.out
+bash basicsr/run.sh 0 4060 basicsr/test.py basicsr/archs/LiteISPNet_arch.py basicsr/models/triplerawisp_model.py basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml test.out
 ```
 
 ## train
 Add the path of the train dataset to `RAWISP4_mask.yml`, then modify the settings in `run.sh` and `LiteISPNet_mask.yml`, and finally run:
 ```Shell
-bash basicsr/run.sh 0,1,2,3 4070 basicsr/train.py /data3/ltl/code/BasicSR_pro/basicsr/archs/LiteISPNet_arch.py /data3/ltl/code/BasicSR_pro/basicsr/models/triplerawisp_model.py /data3/ltl/code/BasicSR_pro/basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml train.out
+bash basicsr/run.sh 0,1,2,3 4070 basicsr/train.py basicsr/archs/LiteISPNet_arch.py basicsr/models/triplerawisp_model.py basicsr/data/triplerawisp_dataset.py options/task/RAWISP4_mask.yml options/expe/LiteISPNet/LiteISPNet_mask.yml train.out
 ```
 
 ## Acknowledgments
