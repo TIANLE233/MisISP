@@ -34,7 +34,7 @@ The results will be saved in `basicsr/results`.
 
 ## RHID Dataset
 To train and test, you will need to download our RHID dataset.
-**Download Links:** [[Baidu Netdisk](https://pan.baidu.com/s/1E4pi-ckMJnc68AMCN_vqKQ?)] password: ustc
+**Download Links:** [[Baidu Netdisk](https://pan.baidu.com/s/1E4pi-ckMJnc68AMCN_vqKQ?)] The dataset will be publicly available with an access code upon paper acceptance. If you need to access the data beforehand, please contact us via email at anchen@ustc.edu.cn.
 
 ```Shell
 RHID_dataset/
