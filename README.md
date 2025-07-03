@@ -80,4 +80,4 @@ bash basicsr/run.sh 0,1,2,3 4070 basicsr/train.py basicsr/archs/LiteISPNet_arch.
 This code is based on [BasicSR](https://github.com/XPixelGroup/BasicSR) and [FriedRiceLab](https://github.com/Fried-Rice-Lab/FriedRiceLab). For more details, please refer to `README.md` of them.
 
 ## Contact
-This repository is maintained by [Tianle Liu](https://github.com/TIANLE233) (tleliu@mail.ustc.edu.cn). Should you have any problem, please contact him.
+This repository is maintained by [Tianle Liu](https://github.com/TIANLE233) (tleliu@mail.ustc.edu.cn) and [Huaian Chen](https://github.com/anchen507) (anchen@ustc.edu.cn). Should you have any problem, please contact them.
