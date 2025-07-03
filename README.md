@@ -6,7 +6,7 @@ This repository contains the official implementation of the following paper:
 
 <img src="images/dataset.png">
 
-> Examples from the captured RHID dataset. From top to bottom: (a) visualized RAW input, (b) output of the proposed method, and (c) ground-truth reference captured by a DSLR camera.
+> Examples from the captured RHID dataset. From top to bottom: visualized RAW input, output of the proposed method, and ground-truth reference captured by a DSLR camera.
 
 <img src="images/Framework.png">
 
