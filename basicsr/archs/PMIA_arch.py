@@ -264,9 +264,9 @@ class ISPFunctions(nn.Module):
 
 
 @ARCH_REGISTRY.register()
-class StyleModel(nn.Module):
+class PMIA(nn.Module):
     def __init__(self, upscale: int, num_in_ch: int, num_out_ch: int, task: str):
-        super(StyleModel, self).__init__()
+        super(PMIA, self).__init__()
         self.style_encoder = Style_Encoder()
         self.isp_functions = ISPFunctions()
 
@@ -287,7 +287,7 @@ if __name__ == '__main__':
     # input_image = torch.rand(3, 4, 256, 256)
 
     # # 创建完整的模型实例
-    model = StyleModel(upscale=1,num_in_ch=6,num_out_ch=3,task='isp')
+    model = PMIA(upscale=1,num_in_ch=6,num_out_ch=3,task='isp')
     model = model.double()  
     # # 使用完整的模型处理输入图像
     # output_image = model(input_image)

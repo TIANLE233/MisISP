@@ -6,7 +6,7 @@ from torch.optim import lr_scheduler
 from collections import OrderedDict
 import torch.nn.functional as F
 from basicsr.utils.registry import ARCH_REGISTRY
-from basicsr.archs.style_arch import StyleModel, Encoder
+from basicsr.archs.PMIA_arch import StyleModel, Encoder
 # from colour_demosaicing import demosaicing_CFA_Bayer_bilinear
 '''
 # ===================================
