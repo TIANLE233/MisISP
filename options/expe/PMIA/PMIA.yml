@@ -1,5 +1,5 @@
 # general settings #####################################################################################################
-name: Style_570
+name: PMIA_570
 model_type: RAWSISPModel
 num_gpu: 4 # 0 for cpu mode
 manual_seed: 42
@@ -8,11 +8,11 @@ bit: 0 # data type
 
 # network structure ####################################################################################################
 network_g:
-  type: StyleModel
+  type: PMIA
 
 # path #################################################################################################################
 path:
-  pretrain_network_g: /data3/ltl/code/BasicSR_pro/basicsr/experiments/Style_570_ISP/models/net_g_latest.pth
+  pretrain_network_g: ~
   strict_load_g: true
   resume_state: ~
   param_key_g: params
